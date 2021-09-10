@@ -1,0 +1,24 @@
+double 5 = incr (incr 0)
+  where incr y = 5 + y
+
+=> { definition of incr }
+
+double 5 = incr (5 + 0)
+  where incr y = 5 + y
+
+=> { definition of + }
+
+double 5 = incr 5
+  where incr y = 5 + y
+
+=> { definition of incr }
+
+double 5 = 5 + 5
+  where incr y = 5 + y
+
+=> { definition of + }
+
+double 5 = 10
+
+So the result of double 5 is 10. The evaluationorder we used is the applicative order evaluation, since we
+first reduced the arguments.
