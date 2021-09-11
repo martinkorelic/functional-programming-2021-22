@@ -7,6 +7,6 @@ Assignment status:
 ## Assignment 1
 
 Exercises:
-- 1.4 - ?
-- 1.5 - Review
-- 1.6 - Review
+- 1.4 - Done
+- 1.5 - Done
+- 1.6 - Done

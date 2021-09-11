@@ -20,5 +20,5 @@ double 5 = 5 + 5
 
 double 5 = 10
 
-So the result of double 5 is 10. The evaluationorder we used is the applicative order evaluation, since we
+So the result of double 5 is 10. The evaluatio norder we used is the applicative order evaluation, since we
 first reduced the arguments.
