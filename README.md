@@ -7,6 +7,13 @@ Assignment status:
 ## Assignment 1
 
 Exercises:
-- 1.4 - Done
-- 1.5 - Done
-- 1.6 - Done
+- [ ] 1.4
+- [ ] 1.5
+- [ ] 1.6
+
+## Assignment 2
+
+Exercises:
+- [ ] 2.4
+- [ ] 2.5
+- [ ] 2.6
