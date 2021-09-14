@@ -14,7 +14,7 @@ reverseCase a = map changeCase a
 shift :: Int -> Char -> Char
 shift a '[' = shift a 'A'
 shift 0 b = b
-shift a b = if isLower b || isSpace b then b else shift (a-1) (succ b)
+shift a b = if not (isAscii b) || isSpace b || not (isLetter b) then b else shift (a-1) (succ b)
 
 caesar :: Int -> String -> String
 caesar a b = map (shift a . toUpper) b
