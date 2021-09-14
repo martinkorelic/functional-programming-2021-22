@@ -14,6 +14,6 @@ Exercises:
 ## Assignment 2
 
 Exercises:
+- [x] 2.3
 - [x] 2.4
 - [x] 2.5
-- [x] 2.6
