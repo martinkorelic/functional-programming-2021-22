@@ -1,3 +1,6 @@
 module Uniq where
 
---uniq :: (Eq a) => [a] -> [a]
+import Data.List
+
+uniq :: (Eq a) => [a] -> [a]
+uniq s = map head (group s)
