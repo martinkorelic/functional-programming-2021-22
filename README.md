@@ -17,3 +17,11 @@ Exercises:
 - [x] 2.3
 - [x] 2.4
 - [x] 2.5
+
+## Assignment 3
+
+Exercises:
+- [x] 3.5
+- [x] 3.6
+- [ ] 3.7
+- [ ] 3.8
