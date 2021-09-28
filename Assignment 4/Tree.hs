@@ -3,20 +3,75 @@ module Tree where
 data Tree a = Leaf | Node a (Tree a) (Tree a)
   deriving Show
 
+tr :: Tree Integer
+tr = Node 3 (Node 2 (Node 1 Leaf Leaf) Leaf) (Node 4 (Node 5 Leaf Leaf) Leaf)
+
+{- 
+          3
+        2   4
+      1  7 5  x
+     x  x x x
+ -}
+
+
 {----------- exercise 4.3 -------------}
 
---leaves :: Tree a -> Int
---nodes  :: Tree a -> Int
---height :: Tree a -> Int
---elems  :: Tree a -> [a]
---isSearchTree :: (Ord a) => Tree a -> Bool
+leaves :: Tree a -> Int
+leaves Leaf = 1
+leaves (Node a l r) = leaves l + leaves r
+
+nodes  :: Tree a -> Int
+nodes Leaf = 0
+nodes (Node a l r) = 1 + nodes l + nodes r
+
+-- If a binary tree has n leaves, then it has n-1 nodes.
+
+height :: Tree a -> Int
+height Leaf = 0
+height (Node a l r) = 1 + max (height l) (height r)
+
+elems  :: Tree a -> [a]
+elems Leaf = []
+elems (Node a l r) = elems l ++ [a] ++ elems r
+
+isSearchTree :: (Ord a) => Tree a -> Bool
+isSearchTree Leaf = True
+isSearchTree (Node a l r)
+  | length (elems l) <= 3 = isSorted (elems l) && isSearchTree r
+  | length (elems r) <= 3 = isSorted (elems r) && isSearchTree l
+  | otherwise = isSearchTree l && isSearchTree r
+
+-- Helper function
+isSorted :: (Ord a) => [a] -> Bool
+isSorted xs = all (\(x, y) -> x <= y) $ zip xs (tail xs)
 
 {----------- exercise 4.4 -------------}
 
---member :: (Ord a) => a -> Tree a -> Bool
---insert :: (Ord a) => a -> Tree a -> Tree a
---delete :: (Ord a) => a -> Tree a -> Tree a
---fromList :: (Ord a) => [a] -> Tree a
+member :: (Ord a) => a -> Tree a -> Bool
+member a Leaf = False
+member a (Node b l r) = a == b || member a l || member a r
+
+insert :: (Ord a) => a -> Tree a -> Tree a
+insert x Leaf = Node x Leaf Leaf
+insert x (Node v l r)
+  | x < v = Node v (insert x l) r
+  | x > v = Node v l (insert x r)
+  | otherwise = Node v l r
+
+delete :: (Ord a) => a -> Tree a -> Tree a
+delete x Leaf = Node x Leaf Leaf
+delete x (Node v l r)
+  | x < v = Node v (delete x l) r
+  | x > v = Node v l (delete x r)
+  -- TODO
+  | otherwise = fromList (elems l ++ elems r)
+
+fromList :: (Ord a) => [a] -> Tree a
+fromList x = listTree Leaf x
+
+listTree :: (Ord a) => Tree a -> [a] -> Tree a
+listTree t [] = t
+listTree t (ha:ta) = listTree (insert ha t) ta
 
 {----------- exercise 4.5 -------------}
 
@@ -28,7 +83,7 @@ data Tree a = Leaf | Node a (Tree a) (Tree a)
  - is prety simple, but it is a fiddly function to write if you want it to
  - produce an actually nice tree. -}
 
-{-
+
 layout :: (Show a) => Tree a -> String
 layout tree = go "" ("","","") tree ++ "\n"
   where 
@@ -50,4 +105,3 @@ layout tree = go "" ("","","") tree ++ "\n"
 
 putTree :: (Show a) => Tree a -> IO()
 putTree tree = putStr (layout tree)
--}
