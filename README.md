@@ -23,5 +23,12 @@ Exercises:
 Exercises:
 - [x] 3.5
 - [x] 3.6
-- [ ] 3.7
+- [x] 3.7
 - [x] 3.8
+
+## Assignment 4
+
+Exercises:
+- [ ] 4.4
+- [ ] 4.5
+- [ ] 4.6
