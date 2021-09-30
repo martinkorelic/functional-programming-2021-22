@@ -59,12 +59,15 @@ insert x (Node v l r)
   | otherwise = Node v l r
 
 delete :: (Ord a) => a -> Tree a -> Tree a
-delete x Leaf = Node x Leaf Leaf
+delete _ Leaf = Leaf
 delete x (Node v l r)
   | x < v = Node v (delete x l) r
   | x > v = Node v l (delete x r)
-  -- TODO
-  | otherwise = fromList (elems l ++ elems r)
+delete _ (Node _ Leaf Leaf) = Leaf
+delete _ (Node _ l Leaf) = l
+delete _ (Node _ Leaf r) = r
+delete _ (Node _ l r) = Node value l (delete value r)
+  where value = minimum (elems r)
 
 fromList :: (Ord a) => [a] -> Tree a
 fromList x = listTree Leaf x
