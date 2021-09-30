@@ -29,6 +29,6 @@ Exercises:
 ## Assignment 4
 
 Exercises:
-- [ ] 4.4
-- [ ] 4.5
+- [x] 4.4
+- [x] 4.5
 - [ ] 4.6

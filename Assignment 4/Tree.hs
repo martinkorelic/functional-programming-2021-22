@@ -1,15 +1,17 @@
 module Tree where
 
+import Data.List as List (reverse)
+
 data Tree a = Leaf | Node a (Tree a) (Tree a)
   deriving Show
 
 tr :: Tree Integer
-tr = Node 3 (Node 2 (Node 1 Leaf Leaf) Leaf) (Node 4 (Node 5 Leaf Leaf) Leaf)
+tr = Node 3 (Node 2 (Node 1 Leaf Leaf) Leaf) (Node 6 (Node 4 Leaf Leaf) (Node 8 Leaf Leaf))
 
 {- 
           3
-        2   4
-      1  7 5  x
+        2   6
+      1  x 4  5
      x  x x x
  -}
 
@@ -78,18 +80,45 @@ listTree t (ha:ta) = listTree (insert ha t) ta
 
 {----------- exercise 4.5 -------------}
 
---inOrder :: Tree a -> [a]
---fromAscList :: [a] -> Tree a
---breadthFirst :: Tree a -> [a]
+inOrder :: Tree a -> [a]
+inOrder Leaf = []
+inOrder (Node v Leaf Leaf) = [v]
+inOrder (Node v l Leaf) = inOrder l ++ [v]
+inOrder (Node v Leaf r) = [v] ++ inOrder r
+inOrder (Node v l r) = inOrder l ++ [v] ++ inOrder r
+
+fromAscList :: [a] -> Tree a
+fromAscList [] = Leaf
+fromAscList xs =  Node (xs !! h) (fromAscList (reverse (divide (reverse xs) sh))) (fromAscList (divide xs fh)) 
+      where fh = length xs `div` 2
+            h = fh
+            sh = length xs - h - 1
+
+divide :: (Num a1, Enum a1, Ord a1) => [a2] -> a1 -> [a2]
+divide xs h = [ x | (i,x) <- zip [0..] xs, i > h ]
+
+breadthFirst :: Tree a -> [a]
+breadthFirst t = bFifo [t] t
+
+bFifo :: [Tree a] -> Tree a -> [a]
+bFifo q Leaf = []
+bFifo [] _ = []
+bFifo (q:qs) (Node v l Leaf) = [v] ++ bFifo qr (head qr)
+  where qr = qs ++ [l]
+
+bFifo (q:qs) (Node v Leaf r) = [v] ++ bFifo qr (head qr)
+  where qr = qs ++ [r]
+
+bFifo q (Node v l r) = [v] ++ bFifo qr (head qr)
+  where qr = tail q ++ [l] ++ [r]
 
 {- BONUS: a tree pretty printer; the recursive structure of this function
  - is prety simple, but it is a fiddly function to write if you want it to
  - produce an actually nice tree. -}
 
-
 layout :: (Show a) => Tree a -> String
 layout tree = go "" ("","","") tree ++ "\n"
-  where 
+  where
   width = maximum (0:[ length (show e) | e <- elems tree ])
   pad s = let s' = show s in replicate (width-length s') '-' ++ s'
   fill  = replicate width ' '
@@ -97,11 +126,11 @@ layout tree = go "" ("","","") tree ++ "\n"
   go pre _ Leaf = pre ++ "\n" -- change this to "" to get a more compact display
   go pre (preL,preR,preN) (Node k lt rt)
     = go (pre ++ preL) (hfill,v_bar,lbend) rt
-      ++ (pre ++ preN) ++ pad k ++ junct ++ 
+      ++ (pre ++ preN) ++ pad k ++ junct ++
       go (pre ++ preR) (v_bar,hfill,rbend) lt
 
   junct = "┤\n"
-  hfill = fill ++ "  " 
+  hfill = fill ++ "  "
   lbend = fill ++ "╭─"  -- change to "/-" if no Unicode
   v_bar = fill ++ "│ "  -- change to "| " if no Unicode
   rbend = fill ++ "╰─"  -- change to "\-" if on Unicode
