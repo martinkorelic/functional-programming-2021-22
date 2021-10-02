@@ -1,5 +1,4 @@
 module AST where
-import Distribution.Simple.Utils (xargs)
 
 --start with either:
 data Expr = Lit Integer | Add Expr Expr | Mul Expr Expr | Sub Expr Expr | Div Expr Expr | VarX

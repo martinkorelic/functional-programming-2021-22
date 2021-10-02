@@ -31,4 +31,4 @@ Exercises:
 Exercises:
 - [x] 4.4
 - [x] 4.5
-- [ ] 4.6
+- [x] 4.6
