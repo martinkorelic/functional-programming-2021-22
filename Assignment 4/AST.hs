@@ -8,8 +8,6 @@ data Expr = Lit Integer | Add Expr Expr | Mul Expr Expr | Sub Expr Expr | Div Ex
 --  infixl 6 :+:
 --  infixl 7 :*:
 
-
-
 eval :: (Fractional a, Eq a) => Expr -> a -> Maybe a
 eval (Lit a) _ = Just (fromInteger a)
 eval VarX x = Just x
