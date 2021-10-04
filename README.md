@@ -32,3 +32,10 @@ Exercises:
 - [x] 4.4
 - [x] 4.5
 - [x] 4.6
+
+## Assignment 5
+
+Exercises:
+- [ ] 5.6
+- [ ] 5.7
+- [ ] 5.8
