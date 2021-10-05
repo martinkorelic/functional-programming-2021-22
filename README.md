@@ -36,6 +36,6 @@ Exercises:
 ## Assignment 5
 
 Exercises:
-- [ ] 5.6
-- [ ] 5.7
+- [x] 5.6
+- [x] 5.7
 - [ ] 5.8
