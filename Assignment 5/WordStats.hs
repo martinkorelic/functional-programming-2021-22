@@ -9,8 +9,8 @@ word = "the eastern spot is the nearest stop in earnest"
 wordFrequency :: String -> [(String,Int)]
 wordFrequency  = map (\x->(head x,length x)) . group . sort . words
 
---wordFrequency' :: String -> Map.Map k a
---wordFrequency' = 
+wordFrequency' :: String -> [(String, Int)]
+wordFrequency' s = Map.toList (Map.fromListWith (+) [(w, 1) | w <- words s])
 
 mostFrequentOfLength :: Int -> String -> [(String, Int)]
 mostFrequentOfLength n = reverse . sortOn snd . filter (\(w,l) -> length w >= n) . wordFrequency
