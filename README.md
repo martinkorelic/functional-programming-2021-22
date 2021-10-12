@@ -38,4 +38,10 @@ Exercises:
 Exercises:
 - [x] 5.6
 - [x] 5.7
-- [ ] 5.8
+- [x] 5.8
+
+## Assignment 6
+
+Exercises:
+- [ ] 6.5
+- [ ] 6.6 
