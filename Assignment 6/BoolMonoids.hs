@@ -1,17 +1,17 @@
 module Monoids where
 import Data.Monoid
 
--- 1
-
-newtype Boolean x y = Boolean { fromBool :: Bool }
+newtype And = And{getBool :: Bool}
     deriving (Show)
 
-instance Semigroup Boolean where
-    a <> b  = Boolean (a <> b)
+instance Monoid And where
+    mempty = And True
 
---instance Monoid And where
---    mempty = True
---    mappend = Boolean (fromBool x && fromBool y)
+instance Semigroup And where
+    (<>) a b = And (getBool a && getBool b)
+
+--"And True <> And True" will return: "And {getBool = True}"
+
 
 -- Depends on P
 -- p && t = p
