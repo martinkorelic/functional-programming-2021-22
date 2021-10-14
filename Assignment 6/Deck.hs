@@ -25,6 +25,9 @@ hand = [Card Hearts Queen, Card Spades (Numeral 3), Card Clubs (Numeral 3), Card
 shuffledDeck :: [Card]
 shuffledDeck = deck 5
 
+keyhand :: [(Int, Card)]
+keyhand = zip [1,7,3,4,4,5,6,7,7,7] shuffledDeck
+
 deck :: Int -> [Card]
 deck seed = [ Card (toEnum h) (toVal (v+1)) | i <- [1..52], let r = 37*(i+seed) `mod` 52, let h = r `mod` 4, let v = r `div` 4 ]
   where toVal 1  = Ace

@@ -14,9 +14,21 @@ digitalSortOn f = concat . rank . map (\x->(f x, x))
 digitalSort :: (Rankable key) => [key] -> [key]
 digitalSort = digitalSortOn id
 
---genericRank :: (Ord key) => [(key,a)] -> [[a]]
+genericRank :: (Ord key) => [(key,a)] -> [[a]]
+genericRank = map (map snd . sortOn fst) . groupBy (\(x,i) (y,l) -> x == y) . sortOn fst
 
---instance Rankable Int where ... etc.
+instance Rankable Int where
+  rank = genericRank
+
+instance Rankable Integer where
+  rank = genericRank
+
+instance Rankable Char where
+  rank = genericRank
+
+--instance Rankable Bool where
+--  rank [] = []
+--  rank (l:ls) = if fst l then rank ls ++ [[snd l]] else [[snd l]] ++ rank ls
 
 --instance Rankable Bool where ...
 
