@@ -26,18 +26,30 @@ instance Rankable Integer where
 instance Rankable Char where
   rank = genericRank
 
---instance Rankable Bool where
---  rank [] = []
---  rank (l:ls) = if fst l then rank ls ++ [[snd l]] else [[snd l]] ++ rank ls
+bv :: [((Int,Int), Int)]
+bv = zip [(1,3), (4,3), (1,3), (8,9), (2,2), (0,0)] [1,2,3,4,5,6]
 
---instance Rankable Bool where
+mr :: [(Maybe Int, Int)]
+mr = zip [(Just 3), Nothing, (Just 10), (Just 10), Nothing, Nothing] [1,2,3,4,5,6]
+
+instance Rankable Bool where
+  rank [] = [[],[]]
+  rank (l:ls)
+    | fst l = let h = rank ls in [head h, snd l : last h] 
+    | otherwise = let h = rank ls in [snd l : head h, last h]
 
 instance (Rankable key1, Rankable key2) => Rankable (key1,key2) where
-  rank = permutations . map snd . digitalSortOn fst . map snd . digitalSortOn fst . map assoc
---permutations is wrong but I put in in here so the function runs, should be a groupBy somewhere to make the
---function work properly
+  rank = map (map snd) . rank . map assoc
 
 assoc :: ((k1,k2),a) -> (k1,(k2,a))
 assoc ((k1,k2),a) = (k1,(k2,a))
 
---etc.
+maybRank :: [(Maybe key, a)] -> [[(Maybe key, a)]]
+maybRank [] = [[],[]]
+maybRank (l:ls)
+  | isNothing (fst l) = let h = maybRank ls in [l : head h, last h]
+  | otherwise = let h = maybRank ls in [head h, l : last h]
+
+instance Rankable key => Rankable (Maybe key) where
+  rank l = (map snd (head mList)) : (rank $ map (\(Just x,y) -> (x,y)) (last mList))
+    where mList = maybRank l
