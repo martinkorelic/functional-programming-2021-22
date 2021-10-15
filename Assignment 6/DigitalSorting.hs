@@ -30,8 +30,14 @@ instance Rankable Char where
 --  rank [] = []
 --  rank (l:ls) = if fst l then rank ls ++ [[snd l]] else [[snd l]] ++ rank ls
 
---instance Rankable Bool where ...
+--instance Rankable Bool where
 
---instance (Rankable key1, Rankable key2) => Rankable (key1,key2) where
+instance (Rankable key1, Rankable key2) => Rankable (key1,key2) where
+  rank = permutations . map snd . digitalSortOn fst . map snd . digitalSortOn fst . map assoc
+--permutations is wrong but I put in in here so the function runs, should be a groupBy somewhere to make the
+--function work properly
+
+assoc :: ((k1,k2),a) -> (k1,(k2,a))
+assoc ((k1,k2),a) = (k1,(k2,a))
 
 --etc.
