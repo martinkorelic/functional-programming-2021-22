@@ -29,8 +29,8 @@ instance Rankable Char where
 bv :: [((Int,Int), Int)]
 bv = zip [(1,3), (4,3), (1,3), (8,9), (2,2), (0,0)] [1,2,3,4,5,6]
 
-mr :: [(Maybe Int, Int)]
-mr = zip [(Just 3), Nothing, (Just 10), (Just 10), Nothing, Nothing] [1,2,3,4,5,6]
+mr :: [(String, Int)]
+mr = zip ["ah", "aah", "ch", "deh", "fh", "deh"] [1,2,3,4,5,6]
 
 instance Rankable Bool where
   rank [] = [[],[]]
@@ -39,7 +39,7 @@ instance Rankable Bool where
     | otherwise = let h = rank ls in [snd l : head h, last h]
 
 instance (Rankable key1, Rankable key2) => Rankable (key1,key2) where
-  rank = map (map snd) . rank . map assoc
+  rank = concat . map rank . rank . map assoc
 
 assoc :: ((k1,k2),a) -> (k1,(k2,a))
 assoc ((k1,k2),a) = (k1,(k2,a))
@@ -51,5 +51,14 @@ maybRank (l:ls)
   | otherwise = let h = maybRank ls in [head h, l : last h]
 
 instance Rankable key => Rankable (Maybe key) where
-  rank l = (map snd (head mList)) : (rank $ map (\(Just x,y) -> (x,y)) (last mList))
+  rank l = [ x | x <- cList, not (null x) ]
     where mList = maybRank l
+          cList = (map snd (head mList)) : (rank $ map (\(Just x,y) -> (x,y)) (last mList))
+
+instance Rankable key => Rankable [key] where
+  rank = rank . digitalSortOn fst . map (\(x, y) -> (uncons x, y))
+
+rankWithKey :: (Rankable key) => [(key,a)] -> [[(key,a)]]
+rankWithKey l = map (\(x,y) -> zip x y) $ zip ordKeys ordValues
+            where ordKeys = rank (map (\(k,v) -> (k,k)) l)
+                  ordValues = rank l
