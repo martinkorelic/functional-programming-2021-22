@@ -26,11 +26,10 @@ instance Rankable Integer where
 instance Rankable Char where
   rank = genericRank
 
-bv :: [((Int,Int), Int)]
-bv = zip [(1,3), (4,3), (1,3), (8,9), (2,2), (0,0)] [1,2,3,4,5,6]
-
-mr :: [(String, Int)]
-mr = zip ["ah", "aah", "ch", "deh", "fh", "deh"] [1,2,3,4,5,6]
+--bv :: [((Int,Int), Int)]
+--bv = zip [(1,3), (4,3), (1,3), (8,9), (2,2), (0,0)] [1,2,3,4,5,6]
+--mr :: [(String, Int)]
+--mr = zip ["ah", "aah", "ch", "deh", "fh", "deh"] [1,2,3,4,5,6]
 
 instance Rankable Bool where
   rank [] = [[],[]]
