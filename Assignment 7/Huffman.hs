@@ -2,6 +2,9 @@ module Huffman where
 
 import Data.List
 
+import Data.Maybe
+import qualified Data.Map as M
+
 data Btree a = Tip a | Bin (Btree a) (Btree a)
   deriving Eq -- Show is done manually
 
@@ -11,21 +14,45 @@ data Bit = O | I
 -----------------------------------------------------------------------
 
 frequencies :: (Ord a) => [a] -> [(a,Int)]
-frequencies = error "TODO: IMPLEMENT ME"
+frequencies  = map (\x->(head x,length x)) . group . sort
 
 -----------------------------------------------------------------------
 
 huffman :: [(a,Int)] -> Btree a
-huffman = error "TODO: IMPLEMENT ME"
+huffman = head . huffmanHelp . sortOn snd . map (\(x,y) -> (Tip x,y))
+
+huffmanHelp :: [(Btree a, Int)] -> [Btree a]
+huffmanHelp [] = []
+huffmanHelp [y] = [fst y]
+huffmanHelp (x:y:ys) = huffmanHelp $ sortOn snd $ [(Bin (fst x) (fst y),snd x + snd y)] ++ ys
 
 -----------------------------------------------------------------------
 
---encode :: (Ord a) => Btree a -> [a] -> [Bit]
+codes :: (Ord a) => Btree a -> M.Map a [Bit]
+codes a = helpCodes a [] M.empty
+
+helpCodes :: (Ord a) => Btree a -> [Bit] -> M.Map a [Bit] -> M.Map a [Bit]
+helpCodes (Tip a) bits m = M.insert a bits m
+helpCodes (Bin a b) bits m = helpCodes b (bits ++ [I]) (helpCodes a (bits ++ [O]) m)
+
+encode :: (Ord a) => Btree a -> [a] -> [Bit]
+encode a b = concat $ map (\x -> cds M.! x) b 
+              where cds = codes a
 
 -----------------------------------------------------------------------
 
---decode :: (Ord a) => Btree a -> [Bit] -> [a]
+decodes :: (Ord a) => Btree a -> [Bit] -> ([Bit], Maybe a)
+decodes (Tip a) [] = ([], Just a)
+decodes _ [] = ([], Nothing)
+decodes (Tip a) bits = (bits, Just a)
+decodes (Bin l r) (b:bs) = case b of
+                            O -> decodes l bs
+                            I -> decodes r bs
 
+decode :: (Ord a) => Btree a -> [Bit] -> [a]
+decode tree [] = []
+decode tree bits = [fromJust (snd dl)] ++ decode tree (fst dl)
+                where dl = decodes tree bits
 -----------------------------------------------------------------------
 
 backus1978 :: String
@@ -39,7 +66,7 @@ backus1978 =
   \still higher level ones in a style not possible in conventional languages."
 
 thanksForAllTheFish :: String
-thanksForAllTheFish = 
+thanksForAllTheFish =
   "It is an important and popular fact that things are not always what\n\
   \they seem. For instance, on the planet Earth, man had always\n\
   \assumed that he was more intelligent than dolphins because he had\n\
@@ -78,7 +105,7 @@ testHuffman = display mismatches
   where
   mismatches = filter (\(x,y)->huffman x /= y) testSet
   (==>) x y = (x,y) -- local syntactic sugar for tuples
-  testSet = [ [(' ',1)] 
+  testSet = [ [(' ',1)]
             ==> Tip ' '
             , [(' ',1),('d',1)]
             ==> Bin (Tip ' ') (Tip 'd')
@@ -107,7 +134,7 @@ instance (Show a) => Show (Btree a) where
   show = indent "\n"
     where
     indent _   (Tip x)   = "Tip " ++ show x
-    indent _   (Bin l@(Tip _) r@(Tip _)) 
+    indent _   (Bin l@(Tip _) r@(Tip _))
                          = "Bin (" ++ show l ++ ") (" ++ show r ++ ")"
     indent pre (Bin l r) = "Bin (" ++ indent (pre++"     ") l ++ ")" ++ pre ++
                            "    (" ++ indent (pre++"     ") r ++ ")"
