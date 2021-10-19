@@ -43,5 +43,13 @@ Exercises:
 ## Assignment 6
 
 Exercises:
-- [ ] 6.5
-- [ ] 6.6 
+- [x] 6.5
+- [x] 6.6
+
+## Assignment 7 
+
+Exercises:
+- [ ] 7.4
+- [ ] 7.5
+- [ ] 7.6
+- [ ] 7.7
