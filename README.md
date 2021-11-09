@@ -53,3 +53,10 @@ Exercises:
 - [x] 7.5
 - [x] 7.6
 - [x] 7.7
+
+## Assignment 8
+
+Exercises:
+- [ ] 8.6
+- [ ] 8.7
+- [ ] 8.8

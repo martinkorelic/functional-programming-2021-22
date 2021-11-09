@@ -1,4 +1,5 @@
------------------------------------------------------
+
+----------------------------------------------------
 To prove: map (f . g) xs = map f (map g xs)
 By induction on xs.
 
@@ -37,4 +38,3 @@ IH: ...
 To prove: concat (map (map f) xs) = map f (concat xs)
 
 ...
-
