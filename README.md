@@ -57,6 +57,6 @@ Exercises:
 ## Assignment 8
 
 Exercises:
-- [ ] 8.6
-- [ ] 8.7
+- [x] 8.6
+- [x] 8.7
 - [ ] 8.8

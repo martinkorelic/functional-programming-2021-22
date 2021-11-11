@@ -96,6 +96,8 @@ elems t1 ++ [x] ++ elems t2 ++ xs
 elemsCat t1 [x] ++ elems t2 ++ xs
 = { IH.2 }
 elemsCat t1 [x] ++ elemsCat t2 xs
+= { com. of ++ }
+elemsCat t2 xs ++ elemsCat t1 [x]
 
 -}
 
