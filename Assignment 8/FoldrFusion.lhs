@@ -87,11 +87,8 @@ foldr (\x xs -> f (g x) : xs) (map f e)
 foldr (\x xs -> f (g x) : xs) []
 = { def. of map }
 foldr (\x xs -> f (g x) : xs) []
-= { def. of (.) }
-foldr ((\x xs -> f x : xs) . g) []
 = { def. of map }
 map (f . g)
-
 
 
 IF part:
