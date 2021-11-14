@@ -59,4 +59,4 @@ Exercises:
 Exercises:
 - [x] 8.6
 - [x] 8.7
-- [ ] 8.8
+- [x] 8.8
