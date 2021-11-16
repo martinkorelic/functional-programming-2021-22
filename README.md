@@ -60,3 +60,9 @@ Exercises:
 - [x] 8.6
 - [x] 8.7
 - [x] 8.8
+
+## Assignment 9
+
+Exercises:
+- [ ] 9.4
+- [ ] 9.5
