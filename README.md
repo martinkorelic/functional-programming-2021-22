@@ -65,4 +65,4 @@ Exercises:
 
 Exercises:
 - [ ] 9.4
-- [ ] 9.5
+- [x] 9.5
