@@ -15,26 +15,47 @@ instance (Show a) => Show (Stream a) where
 from :: Integer -> Stream Integer
 from n = n :> from (n + 1)
 
---head :: Stream a -> a
+head :: Stream a -> a
+head (a :> b) = a
 
---tail :: Stream a -> Stream a
+tail :: Stream a -> Stream a
+tail (a :> b) = b
 
---repeat :: a -> Stream a
+repeat :: a -> Stream a
+repeat a = a :> repeat a
 
---map :: (a -> b) -> (Stream a -> Stream b)
+map :: (a -> b) -> (Stream a -> Stream b)
+map f (a :> b) = f a :> map f b
 
---zipWith :: (a -> b -> c) -> (Stream a -> Stream b -> Stream c)
+zipWith :: (a -> b -> c) -> (Stream a -> Stream b -> Stream c)
+zipWith f (a :> b) (c :> d) = f a c :> zipWith f b d
 
---filter :: (a -> Bool) -> Stream a -> Stream a
+filter :: (a -> Bool) -> Stream a -> Stream a
+filter f (a :> b) = if f a then a :> filter f b else filter f b
 
---toList :: Stream a -> [a]
+--using filter (\x False) (from 0) will result in iterating through the stream but every
+--element will be filtered out
 
---cycle :: [a] -> Stream a
+toList :: Stream a -> [a]
+toList (a :> b) = a : toList b
+
+cycle :: [a] -> Stream a
+cycle xs = foldr (:>) (cycle xs) xs
 
 nat, fib :: Stream Integer
 nat = 0 :> zipWith (+) nat (repeat 1)
 fib = 0 :> 1 :> zipWith (+) fib (tail fib)
 
---primetwins :: Stream (Integer,Integer)
+primetwins :: Stream (Integer,Integer)
+primetwins = filter (\(a,b) -> a+2==b) (zipWith tuple (primes 2) (primes 3))
 
---combine :: Stream a -> Stream a -> Stream a
+tuple :: a -> b -> (a,b)
+tuple a b = (a,b)
+
+primes :: Integer -> Stream Integer
+primes n = filter (>=n) (cycle (sieve [2..]))
+  where
+    sieve (p:xs) = p : sieve [x|x <- xs, x `mod` p > 0]
+
+combine :: Stream a -> Stream a -> Stream a
+combine (a :> b) (c :> d) = a :> c :> combine b d
