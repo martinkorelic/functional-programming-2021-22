@@ -64,5 +64,10 @@ Exercises:
 ## Assignment 9
 
 Exercises:
-- [ ] 9.4
+- [x] 9.4
 - [x] 9.5
+
+## Assignment 10
+
+Exercises:
+- [ ] 10.2
