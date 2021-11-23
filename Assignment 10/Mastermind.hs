@@ -5,13 +5,29 @@ import Data.Char
 import Data.Maybe
 import System.Random
 import System.IO
+import Data.Int (Int)
 
 {---------------------- functional parts -------------------------------}
 
---data Colour = ...
+data Colour = White | Silver | Green | Red | Orange | Pink | Yellow | Blue
+  deriving (Eq, Show)
 
---scoreAttempt :: (Ord a) => [a] -> [a] -> ???
-scoreAttempt code guess = error "implement me"
+newtype Code a = Code [Colour]
+  deriving (Eq)
+
+scoreAttempt :: (Ord a) => [a] -> [a] -> (Int, Int)
+scoreAttempt code guess = (a, b-a) where
+  a = correctRightPos code guess
+  b = correctWrongPos code guess
+
+correctRightPos :: (Ord a) => [a] -> [a] -> Int
+correctRightPos code guess = sum (zipWith (\ a b -> (if a == b then 1 else 0)) code guess)
+
+correctWrongPos :: (Ord a) => [a] -> [a] -> Int
+correctWrongPos code guess = length code - length (removeElems code guess)
+
+removeElems :: (Ord a) => [a] -> [a] -> [a]
+removeElems = foldl (flip delete)
 
 -- Some test cases from: https://www.boardgamecapital.com/game_rules/mastermind.pdf
 test1, test2, test3, test4 :: Bool
