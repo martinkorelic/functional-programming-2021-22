@@ -46,13 +46,17 @@ roll_2d6 = do
   b <- roll_d6
   return (a + b)
 
-getCode :: IO [Colour]
-getCode = do
-  a <- randomRIO (0, 7)
-  b <- randomRIO (0, 7)
-  c <- randomRIO (0, 7)
-  d <- randomRIO (0, 7)
-  return ([giveColour a] ++ [giveColour b] ++ [giveColour c] ++ [giveColour d])
+getCode :: Int -> IO [Colour]
+getCode n = do
+  randomNumbers <- randomList n
+  return (map giveColour randomNumbers)
+
+randomList :: Int -> IO [Int]
+randomList 0 = return []
+randomList n = do
+  r <- randomRIO (0,7)
+  rs <- randomList (n-1)
+  return (r:rs)
 
 giveColour :: Int -> Colour
 giveColour 0 = White
@@ -64,27 +68,35 @@ giveColour 5 = Pink
 giveColour 6 = Yellow
 giveColour _ = Blue
 
---playGame 3 [Red, Green, Yellow]
-playGame :: (Ord a, Read a) => Int -> [a] -> IO ()
-playGame 0 _ = putStrLn "You lost the game!"
+playGame :: (Ord a, Read a, Show a) => Int -> [a] -> IO ()
+playGame 0 x = do
+  putStrLn "No more tries, game over."
+  putStrLn ("The code was " ++ show x)
 playGame attempt x = do
-  putStrLn ("\nGuess the code, you have " ++ show attempt ++ " tries left:")
+  putStrLn ("\nTry to guess the secret code word, " ++ show attempt ++ " tries left")
   try <- gameAttempt x
-  if try then putStrLn "You won the game!" else playGame (attempt - 1) x
+  if try then putStrLn "Correct" else playGame (attempt - 1) x
 
-gameAttempt :: (Ord a, Read a) => [a] -> IO (Bool)
+gameAttempt :: (Ord a, Read a) => [a] -> IO Bool
 gameAttempt x = do
   guess <- getLine
   let (a, b) =  scoreAttempt x (map read (words guess))
-  putStrLn("correct guesses: " ++ show a ++ ", correct guesses but wrong place: " ++ show b)
   if a == length x then
     return True
-  else
+  else do
+    putStrLn "Incorrect"
+    putStrLn(show a ++ " colour(s) in the correct position,")
+    putStrLn(show b ++ " colour(s) in the wrong position.")
     return False
 
 main :: IO ()
 main = do
-  code <- getCode
+  putStrLn "What should be the length of the code?"
+  c <- getLine
+  code <- getCode (read c)
   putStrLn "How many guesses would you like?"
   n <- getLine
+  putStrLn ("\n\nI picked a random code word with " ++ show c ++ " colours.")
+  putStrLn "Possible colours are White Silver Green Red Orange Pink Yellow Blue."
+  putStrLn ("Try to guess the secret code word, " ++ show n ++ " tries left")
   playGame (read n) code
