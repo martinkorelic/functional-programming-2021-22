@@ -98,5 +98,4 @@ main = do
   n <- getLine
   putStrLn ("\n\nI picked a random code word with " ++ show c ++ " colours.")
   putStrLn "Possible colours are White Silver Green Red Orange Pink Yellow Blue."
-  putStrLn ("Try to guess the secret code word, " ++ show n ++ " tries left")
   playGame (read n) code

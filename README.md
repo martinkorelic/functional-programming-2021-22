@@ -70,4 +70,4 @@ Exercises:
 ## Assignment 10
 
 Exercises:
-- [ ] 10.2
+- [x] 10.2
