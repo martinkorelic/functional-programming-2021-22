@@ -71,3 +71,9 @@ Exercises:
 
 Exercises:
 - [x] 10.2
+
+## Assignment 11
+
+Exercises:
+- [x] 11.5
+- [ ] 11.6
