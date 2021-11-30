@@ -76,4 +76,4 @@ Exercises:
 
 Exercises:
 - [x] 11.5
-- [ ] 11.6
+- [x] 11.6
