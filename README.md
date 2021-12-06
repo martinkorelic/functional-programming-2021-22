@@ -77,3 +77,9 @@ Exercises:
 Exercises:
 - [x] 11.5
 - [x] 11.6
+
+## Assignment 12
+
+Exercises:
+- [ ] 12.5
+- [ ] 12.6
