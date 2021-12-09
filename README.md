@@ -81,5 +81,5 @@ Exercises:
 ## Assignment 12
 
 Exercises:
-- [ ] 12.5
-- [ ] 12.6
+- [x] 12.5
+- [x] 12.6
