@@ -7,5 +7,7 @@ replicateM' n mx = (:) <$> mx <*> replicateM' (n-1) mx
 
 replicateM :: (Monad m) => Int -> m a -> m [a]
 replicateM 0 _  = return []
---replicateM n mx = do
---  ...
+replicateM n mx = do
+    x <- mx
+    xs <- replicateM (n-1) mx
+    return (x : xs)

@@ -5,10 +5,13 @@ liftMaybe2 f (Just x) (Just y) = Just (f x y)
 liftMaybe2 _ _ _ = Nothing
 
 liftA2 :: (Applicative m) => (a -> b -> c) -> m a -> m b -> m c
-liftA2 f mx my = error "TODO: implement me"
+liftA2 f mx my = f <$> mx <*> my
 
 liftM2 :: (Monad m) => (a -> b -> c) -> m a -> m b -> m c
-liftM2 f mx my = error "TODO: implement me"
+liftM2 f mx my = do
+  x <- mx
+  y <- my
+  return (f x y)
 
 expr1 = liftM2 (++) getLine (return "!")
 
