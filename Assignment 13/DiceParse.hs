@@ -3,6 +3,7 @@ module ParseDice where
 import Control.Applicative
 import Parser
 import Dice
+import Control.Monad (replicateM, foldM)
 
 {-
 
@@ -27,13 +28,33 @@ expr :: Parser Expr
 expr = fraction
 
 fraction :: Parser Expr
-fraction = formula
+fraction = do
+      division <|> formula
+      where
+            division = do { t <- term; Div t <$ symbol "/" <*> positive}
 
 formula :: Parser Expr
-formula = term
+formula = do { t <- term; exprSuffix t}
+      where
+            exprSuffix t = do { symbol "+"; t2 <- term; exprSuffix (t :+: t2)} <|>
+                              do { symbol "-"; t2 <- term; exprSuffix (t :-: t2)} <|>
+                              return t
 
 term :: Parser Expr
-term = Lit <$> integer
+term = ex <|> dice <|> (Lit <$> integer)
+      where
+            ex = symbol "(" *> expr <* symbol ")"
+            dice :: Parser Expr
+            dice = dice1 <|> dice2
+            dice1 = do { 
+                  s <- positive;
+                  char 'd';
+                  di <- positive;
+                  return (dices (s-1) (Dice di))}
+            dice2 = do { char 'd'; di <- positive; return (Dice di)}
+            dices :: Integer -> Expr -> Expr
+            dices 0 d = d
+            dices i d = d :+: dices (i-1) d
 
 positive :: Parser Integer
 positive = integer
