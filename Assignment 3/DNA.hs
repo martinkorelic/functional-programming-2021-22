@@ -16,12 +16,20 @@ exampleDNA :: DNA
 exampleDNA = [A, T, G, T, A, A, A, G, G, G, T, C, C, A, A, T, G, A]
 
 contains :: Segment -> DNA -> Bool
+contains seg dna = any (\x -> let l = takeWhileMatch x seg in l == seg) $ tails dna
+
+takeWhileMatch :: (Eq a) => [a] -> [a] -> [a]
+takeWhileMatch _ [] = []
+takeWhileMatch [] _ = []
+takeWhileMatch (x:xs) (z:zs) = if x == z then x:takeWhileMatch xs zs else []
 
 containsI :: Segment -> DNA -> [Int]
+containsI seg dna = concat $ map (\x -> let {d = map snd x; l = takeWhileMatch d seg} in if l == seg then take (length l) $ map fst x else []) $ tails $ zip [1..] dna
 
 longestOnlyAs :: DNA -> Int
+longestOnlyAs dna = maximum $ map (\x -> let l = takeWhile (==A) x in length l) $ tails dna
 
-longestAtMostTenAs :: DNA -> Int
+--longestAtMostTenAs :: DNA -> Int
 -- Here be dragons!
 
 toDNA :: String -> DNA
