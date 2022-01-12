@@ -5,9 +5,17 @@ import Data.Monoid
 import Data.Function
 import OrdList
 
---foldm :: (a -> a -> a) -> a -> ([a] -> a)
+foldm :: (a -> a -> a) -> a -> ([a] -> a)
+foldm f a [x] = f a x
+foldm f a x = let s = length x `div` 2 in foldm f a (take s x) `f` foldm f a (drop s x)
 
---foldm' :: (a -> a -> a) -> a -> ([a] -> a)
+foldm' :: (a -> a -> a) -> a -> ([a] -> a)
+foldm' f a [x] = f a x 
+foldm' f a x = foldm' f a (zipWith f h1 h2)
+  where
+    s = length x `div` 2
+    h1 = take s x
+    h2 = drop s x
 
 {- Some benchmarking code for your foldm/foldm' implementation -}
 

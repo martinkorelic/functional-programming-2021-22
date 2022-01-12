@@ -2,11 +2,18 @@ module OrdList where
 
 import Data.List
 
---newtype OrdList a = OrdList ...
---  deriving (Eq,Ord,Show)
+{-
 
---instance (Ord a) => Semigroup (OrdList a) where
---  ...
+mempty = []
+(<>) = some sorting of list (asc,desc)
 
---instance (Ord a) => Monoid (OrdList a) where
---  ...
+-}
+
+newtype OrdList a = OrdList [a]
+  deriving (Eq,Ord,Show)
+
+instance (Ord a) => Semigroup (OrdList a) where
+    (OrdList a) <> (OrdList b) = OrdList $ sort (a ++ b)
+  
+instance (Ord a) => Monoid (OrdList a) where
+    mempty = OrdList []
