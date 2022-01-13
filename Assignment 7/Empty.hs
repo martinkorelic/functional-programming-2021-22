@@ -2,12 +2,16 @@ module Empty where
 
 {- which ones of these functions are the improper way to test for [] ? -}
 
+-- Improper
 isEmpty0 list = length list == 0
 
+-- Imroper
 isEmpty1 list = list == []
 
+-- Proper
 isEmpty2 list = null list
 
+-- Proper
 isEmpty3 []   = True
 isEmpty3 _    = False
 
