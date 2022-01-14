@@ -30,7 +30,10 @@ longestOnlyAs :: DNA -> Int
 longestOnlyAs dna = maximum $ map (\x -> let l = takeWhile (==A) x in length l) $ tails dna
 
 --longestAtMostTenAs :: DNA -> Int
--- Here be dragons!
+longestAtMostTenAs' :: DNA -> Int
+longestAtMostTenAs' dna = maximum [ length seg11 + sum seg11 - 1 | seg <- tails (map length segs), let seg11 = take 11 seg ] 
+  where
+  segs = map (takeWhile (/=A)) (dna : [ seg | (A:seg) <- tails dna ]) -- a list of of all segments which reside between A's 
 
 toDNA :: String -> DNA
 toDNA s = [ base | c <- s, (c',base) <- zip "ACGT" [A,C,G,T], c == c' ]
