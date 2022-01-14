@@ -3,8 +3,11 @@ module Nat where
 data Nat = O | S Nat
   deriving Show
 
---instance Eq Nat where
---instance Ord Nat where
+instance Eq Nat where
+  (==) n1 n2 = fromNat n1 == fromNat n2
+
+instance Ord Nat where
+  (<=) n1 n2 = fromNat n1 <= fromNat n2
 
 toNat :: Integer -> Nat
 toNat n | n < 0 = error "can't convert negative values to Nat"
@@ -23,9 +26,17 @@ fromNat = natFoldr (+1) 0
 
 infinity :: Nat
 infinity = S infinity
+-- infinite recursion
 
---(+.) :: Nat -> Nat -> Nat
---(-.) :: Nat -> Nat -> Nat
+(+.) :: Nat -> Nat -> Nat
+(+.) n1 n2 = toNat (if r < 0 then 0 else r)
+  where
+    r = fromNat n1 + fromNat n2
 
---natLength :: [a] -> Nat
---
+(-.) :: Nat -> Nat -> Nat
+(-.) n1 n2 = toNat (if r < 0 then 0 else r)
+  where
+    r = fromNat n1 - fromNat n2
+
+natLength :: [a] -> Nat
+natLength = toNat . fromIntegral . length
