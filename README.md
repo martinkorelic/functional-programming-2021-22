@@ -12,8 +12,8 @@ Assignment status:
 - [x] Assignment 6
 - [x] Assignment 7
 - [x] Assignment 8
-- [ ] Assignment 9
-- [ ] Assignment 10
+- [x] Assignment 9
+- [x] Assignment 10
 - [ ] Assignment 11
 - [ ] Assignment 12
 - [ ] Assignment 13
