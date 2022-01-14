@@ -14,7 +14,6 @@ Base case:
 
 P(Tip a)
 
-
 LHS:
 map f (tips (Tip a))
 = { definition of tips }
@@ -32,36 +31,24 @@ tips (Tip (f a))
 
 LHS = RHS
 
-
 Induction hypothesis:
 
 Assume:
-P(t1) => for all x, P(Bin t1 x) : map f (tips (Bin t1 x)) = tips (mapBtree f (Bin t1 x)) - IH.1
-P(t2) => for all x, P(Bin x t2) : map f (tips (Bin x t2)) = tips (mapBtree f (Bin x t2)) - IH.2
+P(t1) => for all x, P(t1) : map f (tips t1) = tips (mapBtree f t1) - IH.1
+P(t2) => for all x, P(t2) : map f (tips t2) = tips (mapBtree f t2) - IH.2
 
 Show that: map f (tips (Bin t1 t2)) = tips (mapBtree f (Bin t1 t2))
 
-LHS:
 map f (tips (Bin t1 t2))
 = { def. of tips }
 map f (tips t1 ++ tips t2)
-= { def. of map }
-[f tips t1, f tips t2]
-
-
-RHS:
-tips (mapBtree f (Bin t1 t2))
-= { def. of mapBtree }
-tips (Bin (mapBtree f t1) (mapBtree f t2))
-= { def. of tips }
-tips (mapBtree f t1) ++ tips (mapBtree f t2)
-= { IH.1 }
-map f (tips t1) ++ tips (mapBtree f t2)
-= { IH.2 }
+= { def. map }
 map f (tips t1) ++ map f (tips t2)
-= { def. of tips }
-[f tips t1] ++ [f tips t2]
-= { def. of ++ }
-[f tips t1, f tips t2]
-
-LHS = RHS
+= { IH.2 }
+map f (tips t1) ++ tips (mapBtree f t2)
+= { IH.1 }
+tips (mapBtree f t1) ++ tips (mapBtree f t2)
+= { def. tips }
+tips (Bin (mapBtree f t1) (mapBtree f t2))
+= { def. mapBtree }
+tips (mapBtree f (Bin t1 t2))

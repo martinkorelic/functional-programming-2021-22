@@ -31,26 +31,29 @@ xs
 Induction hypothesis:
 
 Assume:
-P(t1), for all x, P(Node a t1 x) => inorderCat (Node a t1 x) xs = inorder (Node a t1 x) ++ xs - IH.1
-P(t2), for all x, P(Node a x t2) => inorderCat (Node a x t2) xs = inorder (Node a x t2) ++ xs - IH.2
+P(t1), for all xs, P(t1) => inorderCat t1 xs = inorder t1 ++ xs - IH.1
+P(t2), for all xs, P(t2) => inorderCat t2 xs = inorder t2 ++ xs - IH.2
 
 inorderCat (Node a t1 t2) xs
 = { def. of inorderCat }
 inorder (Node a t1 t2) ++ xs
 = { def. of inorder }
 inorder t1 ++ [a] ++ inorder t2 ++ xs
+= { assoc. }
+inorder t1 ++ ([a] ++ inorder t2 ++ xs)
 = { IH.1 }
-inorderCat t1 [a] ++ inorder t2 ++ xs
-= { IH. 2 }
-inorderCat t1 [a] ++ inorderCat t2 xs
-= { com. of ++ }
-inorderCat t2 xs ++ inorderCat t1 [a]
+inorderCat t1 ([a] ++ inorder t2 ++ xs)
+= { IH.2 }
+inorderCat t1 ([a] ++ inorderCat t2 xs)
+= { def. (:) }
+inorderCat t1 (a : inorderCat t2 xs)
+
 -}
 
 inorderCat :: Tree a -> [a] -> [a]
 --inorderCat t xs = inorder t ++ xs -- TODO: make me more efficient
 inorderCat Leaf xs = xs
-inorderCat (Node a t1 t2) xs = inorderCat t2 xs ++ inorderCat t1 [a]
+inorderCat (Node a t1 t2) xs = inorderCat t1 (a : inorderCat t2 xs)
 
 -- New implementation is more efficient
 inorder' :: Tree a -> [a]
@@ -80,8 +83,8 @@ xs
 Induction hypothesis:
 
 Assume:
-P(t1), for all x, P(Node a t1 x) => elemsCat (Node a t1 x) xs = elems (Node a t1 x) ++ xs
-P(t2), for all x, P(Node a x t2) => elemsCat (Node a x t2) xs = elems (Node a x t2) ++ xs
+P(t1), for all xs, P(t1) => elemsCat t1 xs = elems t1 ++ xs
+P(t2), for all xs, P(t2) => elemsCat t2 xs = elems t2 ++ xs
 
 elemsCat (Node a t1 t2) xs
 = { def. of elemsCat }
@@ -90,20 +93,20 @@ elems (Node a t1 t2) ++ xs
 x : elems t1 ++ elems t2 ++ xs
 = { def. of. ++ }
 ([x] ++ elems t1) ++ elems t2 ++ xs
-= { com. of ++ }
-elems t1 ++ [x] ++ elems t2 ++ xs
+= { assoc. of ++ }
+[x] ++ (elems t1 ++ elems t2 ++ xs)
+= { IH. 2}
+[x] ++ (elems t1 ++ elemsCat t2 xs)
 = { IH.1 }
-elemsCat t1 [x] ++ elems t2 ++ xs
-= { IH.2 }
-elemsCat t1 [x] ++ elemsCat t2 xs
-= { com. of ++ }
-elemsCat t2 xs ++ elemsCat t1 [x]
+[x] ++ (elemsCat t1 (elemsCat t2 xs))
+= { def. (:) }
+x : elemsCat t1 (elemsCat t2 xs)
 
 -}
 
 elemsCat :: Tree a -> [a] -> [a]
 elemsCat Leaf xs = xs
-elemsCat (Node x t1 t2) xs = elemsCat t2 xs ++ elemsCat t1 [x]
+elemsCat (Node x t1 t2) xs = x : elemsCat t1 (elemsCat t2 xs)
 
 elems' :: Tree a -> [a]
 elems' t = elemsCat t []

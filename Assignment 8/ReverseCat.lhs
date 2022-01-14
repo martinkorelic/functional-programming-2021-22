@@ -31,13 +31,21 @@ IH: reverseCat as bs = reverse as ++ bs, for all bs.
 
     reverseCat (a:as) ys
 
-  = ...
-
+  = reverseCat as (a:ys)
+  { def. IH }
+  = reverse as ++ (a:ys)
+  { def. (++) }
+  = reverse as ++ ([a] ++ ys)
+  { assoc. }
+  = (reverse as ++ [a]) ++ ys
+  { def. reverse }
   = reverse (a:as) ++ ys
 
 
 -----------------------------------------------------
 To prove: reverse xs = reverse' xs
 
-...
-
+  reverse' xs
+  = reverseCat xs []
+  = reverse xs ++ []
+  = reverse xs

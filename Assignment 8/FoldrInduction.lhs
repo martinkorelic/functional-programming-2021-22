@@ -14,7 +14,29 @@ Local definitions:
 To prove: foldr f b xs = compose (map f xs) b
 By induction on xs.
 
-Case 1: ...
+Case 1: xs = []
 
-Case 2: ...
-IH: ...
+    foldr f b []
+    =
+    b
+    =
+    id b
+    =
+    compose [] b
+    =
+    compose (map f []) b
+
+Case 2: xs = (a:as)
+IH: foldr f b as = compose (map f as) b
+
+    foldr f b (a:as)
+    =
+    f a (foldr f b as)
+    =
+    f a (compose (map f as) b)
+    =
+    (f a . compose (map f as)) b
+    =
+    compose (f a : map f as) b
+    =
+    compose (map f (a:as)) b
