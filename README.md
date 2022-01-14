@@ -10,8 +10,8 @@ Assignment status:
 - [x] Assignment 4
 - [x] Assignment 5
 - [x] Assignment 6
-- [ ] Assignment 7
-- [ ] Assignment 8
+- [x] Assignment 7
+- [x] Assignment 8
 - [ ] Assignment 9
 - [ ] Assignment 10
 - [ ] Assignment 11
