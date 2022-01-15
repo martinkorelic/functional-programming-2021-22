@@ -51,7 +51,9 @@ evalIO expr = evalM expr askUser
                           let h = read answer in if h <= b then return h else do {putStrLn $ "Not in range."; askUser b} }
 
 evalND :: Expr -> [Integer]
-evalND (Lit i) = [i]
+evalND exp = evalM exp (\d -> [1..d])
+
+{-evalND (Lit i) = [i]
 evalND (Dice i) = [1..i]
 evalND (x :+: y) = case (length x1 == 1,length y1 == 1) of
                     (True, True) -> [head x1 + head y1]
@@ -70,7 +72,7 @@ evalND (x :-: y) = case (length x1 == 1,length y1 == 1) of
                       x1 = evalND x
                       y1 = evalND y
 evalND (Div x c) = map (`div` c) $ evalND x
-evalND _ = []
+evalND _ = []-}
 
 avg :: (Fractional a) => [Integer] -> a
 avg xs = fromIntegral (sum xs) / fromIntegral (length xs)
