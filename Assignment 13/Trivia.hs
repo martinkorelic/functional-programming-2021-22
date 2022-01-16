@@ -14,6 +14,7 @@ if there is a char to parse, otherwise returns Nothing.
 2. Parses many dot characters until it hits something that isn't a dot. 
 
 -}
+
 -- 3. This causes infinite loop because it is parsed many times
 -- no matter if it fails or is correct
 --loop :: Parser Char
