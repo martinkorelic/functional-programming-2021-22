@@ -49,3 +49,18 @@ indexVars ex = evalState (renameAllVars ex) []
 
 renameAllVars :: Expr String -> State [(String, Int)] (Expr Int)
 renameAllVars = traverse renameVar
+
+-- Exercise 14.5
+
+traverseVars :: (Applicative f) => (a -> f b) -> Expr a -> f (Expr b)
+traverseVars = traverse
+
+traverseLits :: (Applicative f) => (Integer -> f Integer) -> Expr a -> f (Expr a)
+traverseLits fi (Lit x) = Lit <$> fi x
+traverseLits fi (Var v) = pure (Var v)
+traverseLits fi (Op o x y) = Op o <$> traverseLits fi x <*> traverseLits fi y
+
+traverseBinOps :: (Applicative f) => (BinOp -> f BinOp) -> Expr a -> f (Expr a)
+traverseBinOps fi (Lit x) = pure (Lit x)
+traverseBinOps fi (Var v) = pure (Var v)
+traverseBinOps fi (Op o x y) = Op <$> fi o <*> traverseBinOps fi x <*> traverseBinOps fi y
